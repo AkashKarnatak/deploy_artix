@@ -148,4 +148,6 @@ Also read [`how_to_setup_alsa`](how_to_setup_alsa.md), [`save_and_reload_brightn
 
 For image viewer build and install [`sxiv`](https://github.com/muennich/sxiv).
 
+Next install [dwm](https://github.com/AkashKarnatak/dwm), [dmenu](https://dl.suckless.org/tools/dmenu-5.0.tar.gz), [slstatus](https://github.com/AkashKarnatak/slstatus), [st](https://github.com/AkashKarnatak/st) and [slock](https://dl.suckless.org/tools/slock-1.4.tar.gz).
+
 Reboot and enjoy Artix!!!
