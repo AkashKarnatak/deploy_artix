@@ -1,6 +1,6 @@
 # Steps to install Artix linux
 
-Read `setup_wifi_the_chad_way` to setup internet access
+Read [`setup_wifi_the_chad_way`](setup_wifi_the_chad_way.md) to setup internet access
 
 Use `fdisk` or `cfdisk` to partition the drive. 
 
