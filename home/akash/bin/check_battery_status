@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [[ $(cat /sys/class/power_supply/BAT1/status) = "Discharging" ]]; then
+  battery_level=$(cat /sys/class/power_supply/BAT1/capacity)
+  if [ $battery_level -le 80 ]
+  then
+    DBUS_SESSION_BUS_ADDRESS=$(cat $HOME/.dbus/session-bus/*-0 | grep DBUS_SESSION_BUS_ADDRESS= | sed 's/DBUS_SESSION_BUS_ADDRESS=//' | tr -d "\'") notify-send -u critical "Battery low" "Battery level is ${battery_level}%!"
+  fi
+fi

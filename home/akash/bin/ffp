@@ -1,0 +1,1 @@
+firefox --private-window

@@ -1,0 +1,35 @@
+set editing-mode vi
+set keymap vi
+
+set show-mode-in-prompt on 
+
+# For ST
+set enable-keypad on
+
+# PS1 prefix indicator for cmd and ins mode 
+# eg:1
+# set vi-ins-mode-string "\1\e[1;32m\2(insert)\1\e[0m\2"
+# set vi-cmd-mode-string "\1\e[1;31m\2(normal)\1\e[0m\2"
+# eg:2
+# set vi-ins-mode-string "(\1\e[1;32m\2●\1\e[0m\2)"
+# set vi-cmd-mode-string "(\1\e[1;31m\2●\1\e[0m\2)"
+
+# Block cursor in cmd mode and I in ins mode
+set vi-ins-mode-string \1\e[6 q\2
+set vi-cmd-mode-string \1\e[2 q\2
+
+$if mode=vi
+
+set keymap vi-command
+# these are for vi-command mode
+Control-l: clear-screen
+"$": beginning-of-line
+"0": end-of-line
+
+set keymap vi-insert
+# these are for vi-insert mode
+Control-l: clear-screen
+";;": vi-movement-mode
+"\C-h":"\C-w"
+$endif
+

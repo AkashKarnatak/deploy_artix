@@ -1,0 +1,10 @@
+Setup a cronjob to send notification when battery level goes below 25%
+
+Run `crontab -e` and paste the below contents in the text editor
+
+```
+PATH=/home/akash/bin:/home/akash/bin:/usr/local/sbin:/usr/local/bin:/usr/bin
+
+* * * * * /bin/bash /home/akash/bin/check_battery_status
+
+```

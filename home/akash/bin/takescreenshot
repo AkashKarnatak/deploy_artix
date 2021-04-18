@@ -1,0 +1,41 @@
+#!/usr/bin/env python3
+
+from subprocess import run, PIPE, DEVNULL
+import argparse
+
+
+def play_sound():
+    run('aplay /home/akash/bin/camera-shutter.wav'.split(),
+        stdout=DEVNULL, stderr=DEVNULL)
+
+
+parser = argparse.ArgumentParser(description='Take a particular screenshot')
+
+parser.add_argument(
+    'type', help='Type of screenshot to take (f, fc, s, sc, w, wc)')
+
+args = parser.parse_args()
+
+if args.type == 'f':
+    # Fullscreen capture
+    run("""scrot /tmp/%d-%m-%Y-%s_$wx$h.jpg -pe 'mv $f /home/akash/Pictures/'""", shell=True)
+    play_sound()
+elif args.type == 'fc':
+    # Fullscreen to clipboard
+    run("""scrot /tmp/%d-%m-%Y-%s_$wx$h.jpg -pe 'xclip -selection clipboard -target image/png -i $f'""", shell=True)
+elif args.type == 's':
+    # Rectangle capture
+    if(not run("""scrot -s /tmp/%d-%m-%Y-%s_$wx$h.jpg -pe 'mv $f /home/akash/Pictures/'""", shell=True, stderr=PIPE).stderr.decode('utf-8')):
+        play_sound()
+elif args.type == 'sc':
+    # Rectangle to clipboard
+    run("""scrot -s /tmp/%d-%m-%Y-%s_$wx$h.jpg -pe 'xclip -selection clipboard -target image/png -i $f'""", shell=True)
+elif args.type == 'w':
+    # Window capture
+    run("""scrot -u /tmp/%d-%m-%Y-%s_$wx$h.jpg -pe 'mv $f /home/akash/Pictures/'""", shell=True)
+    play_sound()
+elif args.type == 'wc':
+    # Window to clipboard
+    run("""scrot -u /tmp/%d-%m-%Y-%s_$wx$h.jpg -pe 'xclip -selection clipboard -target image/png -i $f'""", shell=True)
+else:
+    print("Incorrect argument")

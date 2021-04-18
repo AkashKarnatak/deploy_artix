@@ -1,0 +1,22 @@
+#!/usr/bin/env python3
+
+from subprocess import run
+import argparse
+import os
+
+CWD = os.path.dirname(__file__)
+parser = argparse.ArgumentParser(description='Save and restore brightness')
+
+parser.add_argument(
+    'option', help='Save or restore brightness (s -> Save, r -> Restore)')
+
+args = parser.parse_args()
+
+if args.option == 's':
+    # Save brightness
+    run(f'cat /sys/class/backlight/intel_backlight/brightness > {os.path.join(CWD, "brightness")}', shell=True)
+elif args.option == 'r':
+    # Restore brightness
+    run(f'cat {os.path.join(CWD, "brightness")} > /sys/class/backlight/intel_backlight/brightness', shell=True)
+else:
+    print("Incorrect argument")
