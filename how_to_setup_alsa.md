@@ -75,12 +75,12 @@ ttable:
 ```
 
 ### Further read:
-https://www.alsa-project.org/wiki/Asoundrc 
-https://www.alsa-project.org/alsa-doc/alsa-lib/pcm_plugins.html 
-https://bootlin.com/blog/audio-multi-channel-routing-and-mixing-using-alsalib/ 
-https://fftrac-bg.ffmpeg.org/wiki/Capture/ALSA 
-https://www.volkerschatz.com/noise/alsa.html 
-https://sysplay.in/blog/linux/2019/06/playing-with-alsa-loopback-devices/ 
+https://www.alsa-project.org/wiki/Asoundrc  
+https://www.alsa-project.org/alsa-doc/alsa-lib/pcm_plugins.html  
+https://bootlin.com/blog/audio-multi-channel-routing-and-mixing-using-alsalib/  
+https://fftrac-bg.ffmpeg.org/wiki/Capture/ALSA  
+https://www.volkerschatz.com/noise/alsa.html  
+https://sysplay.in/blog/linux/2019/06/playing-with-alsa-loopback-devices/  
 
 ### Haven't read but looks useful
 https://wiki.gentoo.org/wiki/ALSA
