@@ -79,7 +79,7 @@ pacman -S wpa_supplicant dhcpcd \
 	libx11 libxft libxinerama libxrandr xorg-server xorg-xbacklight xorg-xinput xorg-xset xorg-xsetroot xorg-xinit xclip \ 
 	dialog python python-pip dosfstools git grub htop zip unzip neofetch man-db scrot mtools ntfs-3g os-prober pbzip2 pcmanfm pigz bash-completion alsa-utils links ttf-font-awesome ttf-dejavu \
 	linux-headers nvidia xf86-video-intel xf86-video-nouveau \
-  xdg-utils xdg-user-dirs patchelf vlc zathura zathura-pdf-mupdf openssh-openrc dunst libnotify cronie-openrc
+  patchelf vlc zathura zathura-pdf-mupdf openssh-openrc dunst libnotify cronie-openrc ntp-openrc
 ```
 
 Next install grub. (BIOS only)
@@ -108,11 +108,15 @@ $ ln -s net.lo net.<interface-name>
 $ rc-update add net.<interface-name> default
 ```
 
-Setup ssh
+Setup some services to run on startup
 
 ```
 $ rc-update add sshd default
+$ rc-update add cronie default
+$ rc-update add ntp-client default
 $ rc-service sshd start
+$ rc-service cronie start
+$ rc-service ntp-client start
 ```
 
 Follow similar steps if you want to set up multiple interfaces. Next let's add a user. 
