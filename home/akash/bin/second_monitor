@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+import argparse
+from subprocess import run, PIPE, DEVNULL
+
+parser = argparse.ArgumentParser(description='Configure second monitor')
+
+parser.add_argument('option', help='Type of display')
+
+args = parser.parse_args()
+
+if args.option == 'only':
+    run('xrandr --output HDMI1 --auto --output eDP1 --off'.split(),
+        stdout=DEVNULL, stderr=DEVNULL)
+elif args.option == 'right':
+    run('xrandr --output eDP1 --auto --output HDMI1 --auto --right-of eDP1'.split(),
+        stdout=DEVNULL, stderr=DEVNULL)
+elif args.option == 'left':
+    run('xrandr --output eDP1 --auto --output HDMI1 --auto --left-of eDP1'.split(),
+        stdout=DEVNULL, stderr=DEVNULL)
+elif args.option == 'off':
+    run('xrandr --output eDP1 --auto --output HDMI1 --off'.split(),
+        stdout=DEVNULL, stderr=DEVNULL)
+else:
+    print('Incorrect option')

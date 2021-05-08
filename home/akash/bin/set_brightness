@@ -14,9 +14,9 @@ args = parser.parse_args()
 
 if args.option == 's':
     # Save brightness
-    run(f'cat /sys/class/backlight/intel_backlight/brightness > {os.path.join(CWD, "brightness")}', shell=True)
+    run(f'cat /sys/class/backlight/intel_backlight/brightness > {os.path.join(CWD, "val/brightness")}', shell=True)
 elif args.option == 'r':
     # Restore brightness
-    run(f'cat {os.path.join(CWD, "brightness")} > /sys/class/backlight/intel_backlight/brightness', shell=True)
+    run(f'cat {os.path.join(CWD, "val/brightness")} > /sys/class/backlight/intel_backlight/brightness', shell=True)
 else:
     print("Incorrect argument")

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if [[ $(cat $HOME/bin/val/volume_status) = 1 ]]; then
+  echo " [ $(awk -F'[][]' '/Mono:/ { print $2 }' <(amixer -M sget Master))] [ $(awk -F'[][]' '/Left:/ { print $2 }' <(amixer -M sget Capture))] "
+else
+  echo " "
+fi
