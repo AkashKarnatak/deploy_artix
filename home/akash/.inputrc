@@ -26,10 +26,87 @@ Control-l: clear-screen
 "$": beginning-of-line
 "0": end-of-line
 
+# vim text objects 
+"#": insert-comment
+".": "i !*\r"
+"|": "A | "
+"D":kill-line
+"C": "Da"
+"dw": kill-word
+"dd": kill-whole-line
+"db": backward-kill-word
+"cc": "ddi"
+"cw": "dwi"
+"cb": "dbi"
+"daw": "lbdW"
+"yaw": "lbyW"
+"caw": "lbcW"
+"diw": "lbdw"
+"diW": "lbdW"
+"yiw": "lbyw"
+"ciw": "lbcw"
+"ciW": "lbcW"
+"da\"": "lF\"df\""
+"di\"": "lF\"lmtf\"d`t"
+"ci\"": "di\"i"
+"ca\"": "da\"i"
+"da'": "lF'df'"
+"di'": "lF'lmtf'd`t"
+"ci'": "di'i"
+"ca'": "da'i"
+"da`": "lF\`df\`"
+"di`": "lF\`lmtf\`d`t"
+"ci`": "di`i"
+"ca`": "da`i"
+"da(": "lF(df)"
+"di(": "lF(lmtf)d`t"
+"ci(": "di(i"
+"ca(": "da(i"
+"da)": "lF(df)"
+"di)": "lF(lmtf)d`t"
+"ci)": "di(i"
+"ca)": "da(i"
+"da{": "lF{df}"
+"di{": "lF{lmtf}d`t"
+"ci{": "di{i"
+"ca{": "da{i"
+"da}": "lF{df}"
+"di}": "lF{lmtf}d`t"
+"ci}": "di}i"
+"ca}": "da}i"
+"da[": "lF[df]"
+"di[": "lF[lmtf]d`t"
+"ci[": "di[i"
+"ca[": "da[i"
+"da]": "lF[df]"
+"di]": "lF[lmtf]d`t"
+"ci]": "di]i"
+"ca]": "da]i"
+"da<": "lF<df>"
+"di<": "lF<lmtf>d`t"
+"ci<": "di<i"
+"ca<": "da<i"
+"da>": "lF<df>"
+"di>": "lF<lmtf>d`t"
+"ci>": "di>i"
+"ca>": "da>i"
+"da/": "lF/df/"
+"di/": "lF/lmtf/d`t"
+"ci/": "di/i"
+"ca/": "da/i"
+"da:": "lF:df:"
+"di:": "lF:lmtf:d`t"
+"ci:": "di:i"
+"ca:": "da:i"
+"gg": beginning-of-history
+"G": end-of-history
+?: reverse-search-history
+/: forward-search-history
+
 set keymap vi-insert
 # these are for vi-insert mode
 Control-l: clear-screen
-";;": vi-movement-mode
+# ";;": vi-movement-mode
 "\C-h":"\C-w"
 $endif
 

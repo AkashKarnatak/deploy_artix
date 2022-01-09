@@ -58,12 +58,15 @@ xset r rate 300 50
 slstatus &
 
 # Start notification daemon
-#dunst &
+dunst &
+
+# Java applications sucks
+export _JAVA_AWT_WM_NONREPARENTING=1
 
 #Loop DWM
-#while true; do
-#    dwm > /dev/null 2>&1
-#done
+# while true; do
+#     dwm > /dev/null 2>&1
+# done
 
 # Execute DWM
 exec dwm

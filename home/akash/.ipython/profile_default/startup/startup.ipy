@@ -1,0 +1,2 @@
+from jupyterthemes import jtplot
+jtplot.style(theme='monokai', grid=False)

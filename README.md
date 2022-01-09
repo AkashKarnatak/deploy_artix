@@ -1,43 +1,82 @@
-# Steps to install Artix linux
+# Steps to install Artix linux (UEFI only)
 
 Read [`setup_wifi_the_chad_way`](setup_wifi_the_chad_way.md) to setup internet access
 
-Use `fdisk` or `cfdisk` to partition the drive. 
-
-Create filesystems.
-
-```properties
-mkfs.ext4 /dev/<block> # for ext4 filesystem
-```  
-
-For swap partition.
-
-```
-mkswap /dev/<swap-block>
-swapon /dev/<swap-block>
+Identify wheather you are using BIOS or UEFI using this command
+```sh
+[[ -d /sys/firmware/efi ]] && echo 'UEFI' || echo 'BIOS'
 ```
 
-Mount all partition.
+Use `lsblk` to list all blocks devices. Identify the name of your disk where you want to install artix.
 
-```properties
+Use `cfdisk` to partition your disk. If the disk does not contain an existing partition table, then select `gpt` as the label type if using `UEFI` else `dos` for `BIOS`.
+
+```sh
+cfdisk /dev/<disk>  # eg: cfdisk /dev/sda
+```
+
+If you don't already have an `efi` partition, create one, 256MB would suffice. Choose `EFI System` as its partition type. Then create a `/` partition of type `Linux filesystem` with size around 50GB. Now create a `swap` partition and use [this](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/managing_storage_devices/getting-started-with-swap_managing-storage-devices#idm140199546884800) table to determine an appropriate swap space. Select `Linux swap` as its partition type. Finally create a `/home` partition of type `Linux filesystem` and assign it rest of the remaining space. Final table should look something like this (ignore sizes and other numbers).
+
+    Device                           Start               End           Sectors           Size Type
+    /dev/sda1                         2048            526335            524288           256M EFI System
+    /dev/sda2                       526336          31983615          31457280            15G Linux filesystem
+    /dev/sda3                     31983616          34080767           2097152             1G Linux swap
+    /dev/sda4                     34080768          41943006           7862239           3.7G Linux filesystem
+
+Now create filesystems. 
+  * For `EFI System` partition
+
+    ```sh
+    mkfs.fat -F32 /dev/<efi-block>
+    ```  
+
+  * For `Linux filesystem` partitions
+
+    ```sh
+    mkfs.ext4 /dev/<root-block>
+    mkfs.ext4 /dev/<home-block>
+    ```  
+
+  * For swap partition
+
+    ```sh
+    mkswap /dev/<swap-block>
+    swapon /dev/<swap-block>
+    ```  
+
+Mount all partitions.
+
+```sh
 # First mount the / partition
 mkdir -p /mnt
 mount /dev/<root-block> /mnt
-# Then create other directories
-mkdir -p /mnt/boot /mnt/home
-mount /dev/<boot-block> /mnt/boot
+# create necessary directories inside /mnt
+mkdir -p /mnt/boot/efi /mnt/home
+# then mount / and /home partitions
+mount /dev/<efi-block> /mnt/boot
 mount /dev/<home-block> /mnt/home
 ```
 
-Then install base packages and other necessary packages.
+Check output of `lsblk` to ensure that everything is correctly setup. Ouptut should look something like this:
 
-```properties
-basestrap /mnt base base-devel openrc linux linux-firmware vim intel-ucode  # linux can replaced with linux-lts and use intel-ucode only when using intel processor
+```sh
+sda      8:0    0    20G  0 disk
+├─sda1   8:1    0   256M  0 part /mnt/boot/efi   # efi partition
+├─sda2   8:2    0    15G  0 part /mnt           # root partition
+├─sda3   8:3    0     1G  0 part [SWAP]         # swap partition
+└─sda4   8:4    0   3.7G  0 part /mnt/home      # home partition
+```
+
+
+Now install base packages and other necessary packages.
+
+```sh
+basestrap /mnt base base-devel openrc elogind-openrc linux linux-firmware vim intel-ucode  # linux can replaced with linux-lts and use intel-ucode only when using intel processor
 ```
 
 Then create filesystem table.
 
-```properties
+```sh
 fstabgen -U /mnt >> /mnt/etc/fstab    # -U for UUIDs
 ```
 
@@ -73,22 +112,45 @@ Now configure the hosts file. vim into `/etc/hosts`. Now enter the following det
 
 Then give root user a password using `passwd`. Now its time to install necessary pacakges. 
 
-```properties
+First install `archlinux-mirrorlist`
+```sh
+pacman -S archlinux-mirrorlist
+```
+now update `/etc/pacman.conf` by adding the following lines to include arch mirrorlists.
+
+```sh
+# ARCHLINUX
+
+[extra]
+Include = /etc/pacman.d/mirrorlist-arch
+
+[community]
+Include = /etc/pacman.d/mirrorlist-arch
+
+[universe]
+Server = https://universe.artixlinux.org/$arch
+```
+
+Finally run the following command to install some essential packages. (remove `nvidia` if you don't have nvidia card)
+
+```sh
 # change linux-headers and nvidia to linux-lts-headers and nvida-lts repectively if using linux-lts
-pacman -S wpa_supplicant dhcpcd \ 
-	libx11 libxft libxinerama libxrandr xorg-server xorg-xbacklight xorg-xinput xorg-xset xorg-xsetroot xorg-xinit xclip \ 
-	dialog python python-pip dosfstools git grub htop zip unzip neofetch man-db scrot mtools ntfs-3g os-prober pbzip2 pcmanfm pigz bash-completion alsa-utils links ttf-font-awesome ttf-dejavu \
-	linux-headers nvidia xf86-video-intel xf86-video-nouveau \
-  patchelf vlc zathura zathura-pdf-mupdf openssh-openrc dunst libnotify cronie-openrc ntp-openrc
+pacman -Syu wpa_supplicant dhcpcd efibootmgr \ 
+        libx11 libxft libxinerama libxrandr xorg-server xorg-xbacklight xorg-xinput xorg-xset xorg-xsetroot xorg-xinit xclip \ 
+        dialog python python-pip dosfstools git grub htop zip unzip neofetch man-db scrot mtools ntfs-3g os-prober pbzip2 pcmanfm pigz bash-completion alsa-utils links ttf-font-awesome ttf-dejavu \
+        linux-headers nvidia xf86-video-intel xf86-video-nouveau \
+        patchelf vlc zathura zathura-pdf-mupdf openssh-openrc dunst libnotify cronie-openrc ntp-openrc
 ```
 
-Next install grub. (BIOS only)
+Next install grub.
 
 ```
-grub-install --target=i386-pc /dev/<drive>
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
 ```
 
-Now configure grub.
+Uncomment the following line `GRUB_DISABLE_OS_PROBER=false` from `/etc/default/grub`.
+
+Configure grub by running the following command.
 
 ```
 grub-mkconfig -o /boot/grub/grub.cfg
@@ -96,7 +158,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 Now the most important part. Configuring the network. For dynamic IP address, add this line to `/etc/conf.d/net`
 
-```properties
+```
 config_<interface-name>="dhcp"
 ```
 
@@ -128,7 +190,7 @@ $ passwd <username>
 
 Now edit the `/etc/sudoers` file using the command,
 
-```properties
+```sh
 EDITOR=vim visudo
 ```
 
@@ -155,3 +217,5 @@ For image viewer build and install [`sxiv`](https://github.com/muennich/sxiv).
 Next install [dwm](https://github.com/AkashKarnatak/dwm), [dmenu](https://dl.suckless.org/tools/dmenu-5.0.tar.gz), [slstatus](https://github.com/AkashKarnatak/slstatus), [st](https://github.com/AkashKarnatak/st) and [slock](https://dl.suckless.org/tools/slock-1.4.tar.gz).
 
 Reboot and enjoy Artix!!!
+
+source: https://www.youtube.com/watch?v=8T0vvf1xm58&list=PL-odKaUzOz3JarNUoE7jMEL537pmjc1hn&index=3

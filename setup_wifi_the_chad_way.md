@@ -20,11 +20,11 @@ Make sure the interface is available and active.
 Add these two line to `/etc/wpa_supplicant/wpa_supplicant-<interface-name>.conf`
 
 ```properties
-ctrl_interface=/var/run/wpa_supplicant
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=wheel
 update_config=1
 ```
 
-`ctrl_interface` specifies the directory where interface sockets will be stored. `update_config=1` allows other programs like `wpa_cli` to update config file. Read more about wpa_supplicant syntax at `/usr/share/doc/wpa_supplicant/wpa_supplicant.conf`.
+`ctrl_interface` specifies the directory where interface sockets will be stored and the group which can access frontend `wpa_cli`. `update_config=1` allows other programs like `wpa_cli` to update config file. Read more about wpa_supplicant syntax at `/usr/share/doc/wpa_supplicant/wpa_supplicant.conf`.
 
 If you already know the ssid and passphrase then you can directly append it to wpa_supplicant config file using `wpa_passphrase`.
 
@@ -72,3 +72,28 @@ Now you have full access to internet. Ping website of your choice to confirm.
 ```
 ping -c5 gentoo.org
 ```
+---
+
+Guide for `wpa_cli`
+
+`wpa_cli` will load all the networks from `wpa_supplicant` file (`/etc/wpa_supplicant/wpa_supplicant-<interface-name>.conf`).
+
+You can list all the networks using `list_networks`.
+
+```
+> list_networks
+network id / ssid / bssid / flags
+0       SSID1   any     [CURRENT]
+1       SSID2   any     [DISABLED]
+2       SSID3   any     [DISABLED]
+```
+
+Select a network using `select_network <network-id>` command.
+
+For eg, to select SSID2 in the above list use this command.
+
+```
+> select network 1
+```
+
+To disable network use the `disable_network <network-id>` command.
