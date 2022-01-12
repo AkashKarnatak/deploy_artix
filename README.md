@@ -53,7 +53,7 @@ mount /dev/<root-block> /mnt
 # create necessary directories inside /mnt
 mkdir -p /mnt/boot/efi /mnt/home
 # then mount / and /home partitions
-mount /dev/<efi-block> /mnt/boot
+mount /dev/<efi-block> /mnt/boot/efi
 mount /dev/<home-block> /mnt/home
 ```
 
