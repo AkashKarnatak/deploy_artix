@@ -1,0 +1,24 @@
+# Static information about the filesystems.
+# See fstab(5) for details.
+
+# <file system> <dir> <type> <options> <dump> <pass>
+# /dev/sdb6
+UUID=c9d8fa7d-0fec-4e1a-93b2-e3f4998f7375	/         	ext4      	rw,relatime	0 1
+
+# /dev/sdb5
+UUID=59fa0b8f-84ef-4385-9de2-6fa2ad429ea5	/boot     	ext4      	rw,relatime	0 2
+
+# /dev/sdb7
+UUID=6cf68034-0336-4bab-93a4-9d5ccd49bf31	/home     	ext4      	rw,relatime	0 2
+
+# /dev/sda8
+UUID=cd46472f-49e2-4a6f-9505-6b219cca69a8	none      	swap      	defaults  	0 0
+
+# /dev/sdb8
+UUID=5bd0f9a8-dad4-4b9f-b6dc-42415ade2eb2	none      	swap      	defaults  	0 0
+
+# D: drive
+# /dev/disk/by-uuid/F8DC8A0CDC89C4FA /mnt/D auto nosuid,nodev,nofail,x-gvfs-show 0 0
+
+# SSD D: drive
+/dev/disk/by-uuid/2C12AE1B12ADEA52      /mnt/SSD_D    ntfs-3g     uid=1000,gid=1000,dmask=022,fmask=133 0 0
