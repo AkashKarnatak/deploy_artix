@@ -1,5 +1,13 @@
 # Steps to install Artix linux (UEFI only)
 
+Find the right disk to install iso using the `lsblk` command.
+
+Make your pendrive bootable using the following command.
+
+```
+sudo dd if=<input-file> of=<output-disk> bs=4M conv=fdatasync status=progress
+```
+
 Read [`setup_wifi_the_chad_way`](setup_wifi_the_chad_way.md) to setup internet access
 
 Identify wheather you are using BIOS or UEFI using this command
