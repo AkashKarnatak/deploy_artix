@@ -662,7 +662,7 @@ c.TerminalInteractiveShell.editing_mode = 'vi'
 
 ## Display the current vi mode (when using vi editing mode).
 #  Default: True
-c.TerminalInteractiveShell.prompt_includes_vi_mode = True
+c.TerminalInteractiveShell.prompt_includes_vi_mode = False
 
 ## Deprecated since IPython 4.0 and ignored since 5.0, set
 #  TerminalInteractiveShell.prompts object directly.

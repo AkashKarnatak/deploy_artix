@@ -112,32 +112,32 @@ Now configure the hosts file. vim into `/etc/hosts`. Now enter the following det
 
 Then give root user a password using `passwd`. Now its time to install necessary pacakges. 
 
-First install `archlinux-mirrorlist`
+First install `artix-archlinux-support`
 ```sh
-pacman -S archlinux-mirrorlist
+pacman -S artix-archlinux-support
 ```
 now update `/etc/pacman.conf` by adding the following lines to include arch mirrorlists.
 
 ```sh
 # ARCHLINUX
 
-[extra]
-Include = /etc/pacman.d/mirrorlist-arch
+# [extra]
+# Include = /etc/pacman.d/mirrorlist-arch
 
 [community]
 Include = /etc/pacman.d/mirrorlist-arch
 
-[universe]
-Server = https://universe.artixlinux.org/$arch
+# [universe]
+# Server = https://universe.artixlinux.org/$arch
 ```
 
 Finally run the following command to install some essential packages. (remove `nvidia` if you don't have nvidia card)
 
 ```sh
 # change linux-headers and nvidia to linux-lts-headers and nvida-lts repectively if using linux-lts
-pacman -Syu wpa_supplicant dhcpcd efibootmgr \ 
-        libx11 libxft libxinerama libxrandr xorg-server xorg-xbacklight xorg-xinput xorg-xset xorg-xsetroot xorg-xinit xclip \ 
-        dialog python python-pip dosfstools git grub htop zip unzip neofetch man-db scrot mtools ntfs-3g os-prober pbzip2 pcmanfm pigz bash-completion alsa-utils links ttf-font-awesome ttf-dejavu \
+pacman -Syu wpa_supplicant dhcpcd dhcpcd-openrc efibootmgr \ 
+        libx11 libxft libxinerama libxrandr xorg-server xorg-xhost xorg-xbacklight xorg-xinput xorg-xset xorg-xsetroot xorg-xinit xclip \ 
+        dialog python python-pip dosfstools git grub htop zip unzip xarchiver neofetch man-db scrot mtools ntfs-3g os-prober pbzip2 pcmanfm pigz bash-completion alsa-utils pulseaudio pulseaudio-alsa links ttf-font-awesome ttf-dejavu \
         linux-headers nvidia xf86-video-intel xf86-video-nouveau \
         patchelf vlc zathura zathura-pdf-mupdf openssh-openrc dunst libnotify cronie-openrc ntp-openrc
 ```
@@ -167,6 +167,7 @@ To automatically have network interface activated at boot, follow these step
 ```
 $ cd /etc/init.d
 $ ln -s net.lo net.<interface-name>
+$ rc-update add dhcpcd default
 $ rc-update add net.<interface-name> default
 ```
 
@@ -200,6 +201,16 @@ Uncomment the following line,
 # %wheel ALL=(ALL) ALL
 ```
 
+also add the following lines in the sudoers file
+
+```
+# Lets me shutdown the fooooking machine
+akash ALL=NOPASSWD: /sbin/halt, /sbin/reboot, /sbin/poweroff
+
+# Disable sudo timeout
+Defaults passwd_timeout=0
+```
+
 then save and quit.
 
 Installation is done now. Exit out of chroot and then unmount all the mounted partitions.
@@ -212,9 +223,16 @@ Copy some files from this directory to your machine. Also copy hidden files like
 
 Also read [`how_to_setup_alsa`](how_to_setup_alsa.md), [`save_and_reload_brightness`](save_and_reload_brightness.md) and [`firefox_with_alsa`](firefox_with_alsa.md).
 
-For image viewer build and install [`sxiv`](https://github.com/muennich/sxiv).
+Install the following:
+* [dwm](https://github.com/AkashKarnatak/dwm),
+* [dmenu](https://dl.suckless.org/tools/dmenu-5.0.tar.gz)
+* [slstatus](https://github.com/AkashKarnatak/slstatus)
+* [st](https://github.com/AkashKarnatak/st)
+*  [slock](https://dl.suckless.org/tools/slock-1.4.tar.gz)
+* imv (Image viewer)
+* zathura (PDF reader)
 
-Next install [dwm](https://github.com/AkashKarnatak/dwm), [dmenu](https://dl.suckless.org/tools/dmenu-5.0.tar.gz), [slstatus](https://github.com/AkashKarnatak/slstatus), [st](https://github.com/AkashKarnatak/st) and [slock](https://dl.suckless.org/tools/slock-1.4.tar.gz).
+and
 
 Reboot and enjoy Artix!!!
 
